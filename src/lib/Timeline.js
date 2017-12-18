@@ -33,6 +33,7 @@ export const defaultTimeSteps = {
   minute: 1,
   hour: 1,
   day: 1,
+  week: 1,
   month: 1,
   year: 1
 }
@@ -44,6 +45,7 @@ export const defaultHeaderLabelFormats = {
   monthMedium: 'MM/YYYY',
   monthMediumLong: 'MMM YYYY',
   monthLong: 'MMMM YYYY',
+  week: 'w',
   dayShort: 'L',
   dayLong: 'dddd, LL',
   hourShort: 'HH',
@@ -59,6 +61,7 @@ export const defaultSubHeaderLabelFormats = {
   monthShort: 'MM',
   monthMedium: 'MMM',
   monthLong: 'MMMM',
+  week: 'w',
   dayShort: 'D',
   dayMedium: 'dd D',
   dayMediumLong: 'ddd, Do',
@@ -145,6 +148,7 @@ export default class ReactCalendarTimeline extends Component {
       minute: PropTypes.number,
       hour: PropTypes.number,
       day: PropTypes.number,
+      week: PropTypes.number,
       month: PropTypes.number,
       year: PropTypes.number
     }),
@@ -167,6 +171,7 @@ export default class ReactCalendarTimeline extends Component {
       monthMedium: PropTypes.string,
       monthMediumLong: PropTypes.string,
       monthLong: PropTypes.string,
+      week: PropTypes.string,
       dayShort: PropTypes.string,
       dayLong: PropTypes.string,
       hourShort: PropTypes.string,
@@ -181,6 +186,7 @@ export default class ReactCalendarTimeline extends Component {
       monthShort: PropTypes.string,
       monthMedium: PropTypes.string,
       monthLong: PropTypes.string,
+      week: PropTypes.string,
       dayShort: PropTypes.string,
       dayMedium: PropTypes.string,
       dayMediumLong: PropTypes.string,

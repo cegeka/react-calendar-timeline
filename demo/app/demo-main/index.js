@@ -26,8 +26,8 @@ export default class App extends Component {
     super(props)
 
     const { groups, items } = generateFakeData()
-    const defaultTimeStart = moment().startOf('day').toDate()
-    const defaultTimeEnd = moment().startOf('day').add(1, 'day').toDate()
+    const defaultTimeStart = moment().startOf('week').toDate()
+    const defaultTimeEnd = moment().endOf('week').toDate()
 
     this.state = {
       groups,

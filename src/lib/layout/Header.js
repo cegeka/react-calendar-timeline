@@ -45,6 +45,8 @@ export default class Header extends Component {
       return time.format(width < 46 ? f.yearShort : f.yearLong)
     } else if (unit === 'month') {
       return time.format(width < 65 ? f.monthShort : width < 75 ? f.monthMedium : width < 120 ? f.monthMediumLong : f.monthLong)
+    } else if (unit === 'week') {
+      return 'Week ' + time.format(f.week)
     } else if (unit === 'day') {
       return time.format(width < 150 ? f.dayShort : f.dayLong)
     } else if (unit === 'hour') {
@@ -61,6 +63,8 @@ export default class Header extends Component {
       return time.format(width < 46 ? f.yearShort : f.yearLong)
     } else if (unit === 'month') {
       return time.format(width < 37 ? f.monthShort : width < 85 ? f.monthMedium : f.monthLong)
+    } else if (unit === 'week') {
+      return 'Week ' + time.format(f.week)
     } else if (unit === 'day') {
       return time.format(width < 47 ? f.dayShort : width < 80 ? f.dayMedium : width < 120 ? f.dayMediumLong : f.dayLong)
     } else if (unit === 'hour') {

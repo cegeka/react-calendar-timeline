@@ -32,32 +32,22 @@ export function iterateTimes (start, end, unit, timeSteps, callback) {
   }
 }
 
-export function getMinUnit (zoom, width, timeSteps) {
-  let timeDividers = {
-    second: 1000,
-    minute: 60,
-    hour: 60,
-    day: 24,
-    month: 30,
-    year: 12
+export function getMinUnit(zoom, width, timeSteps) {
+  if (zoom / 1000 <= 60) {
+    return 'second'
+  } else if (zoom / 1000 / 60 <= 60) {
+    return 'minute'
+  } else if (zoom / 1000 / 60 / 60 <= 24) {
+    return 'hour'
+  } else if (zoom / 1000 / 60 / 60 / 24 <= 7) {
+    return 'day'
+  } else if (zoom / 1000 / 60 / 60 / 24 / 7 <= 5) {
+    return 'week'
+  } else if (zoom / 1000 / 60 / 60 / 24 / 31 <= 12) {
+    return 'month'
+  } else {
+    return 'year'
   }
-
-  let minUnit = 'year'
-  let breakCount = zoom
-  const minCellWidth = 17
-
-  Object.keys(timeDividers).some(unit => {
-    breakCount = breakCount / timeDividers[unit]
-    const cellCount = breakCount / timeSteps[unit]
-    const countNeeded = width / (timeSteps[unit] && timeSteps[unit] > 1 ? 3 * minCellWidth : minCellWidth)
-
-    if (cellCount < countNeeded) {
-      minUnit = unit
-      return true
-    }
-  })
-
-  return minUnit
 }
 
 export function getNextUnit (unit) {
@@ -65,7 +55,8 @@ export function getNextUnit (unit) {
     second: 'minute',
     minute: 'hour',
     hour: 'day',
-    day: 'month',
+    day: 'week',
+    week: 'month',
     month: 'year'
   }
 
