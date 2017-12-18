@@ -452,6 +452,34 @@ export default class ReactCalendarTimeline extends Component {
     if (this.lastSingleTouch) {
       e.preventDefault()
 
+      // Ensure that no touchmove was effected
+      if ((this.lastSingleTouch.x == this.singleTouchStart.x)
+        && (this.lastSingleTouch.y == this.singleTouchStart.y)) {
+
+        // Add clientX and clientY position to event
+        // so that groupId and time can be calculated
+        e.clientX = this.lastSingleTouch.x;
+        e.clientY = this.lastSingleTouch.y;
+
+        // Find out if tap was in scrollarea (below header) or not
+        var wasScrollAreaClick = false;
+        var parentPosition = (0, _utils.getParentPosition)(e.currentTarget);
+        var screenY = this.lastSingleTouch.screenY;
+        var headerHeight = this.props.headerLabelGroupHeight + this.props.headerLabelHeight;
+        var stickyOffset = this.props.stickyOffset;
+        var realOffset = parentPosition.y - screenY;
+        if (realOffset > 0) {
+          wasScrollAreaClick = e.clientY > realOffset + headerHeight;
+        } else {
+          wasScrollAreaClick = e.clientY > stickyOffset + headerHeight;
+        }
+
+        // Call appropriate actions
+        if (wasScrollAreaClick) {
+          this.scrollAreaClick(e);
+        }
+      }
+
       this.lastSingleTouch = null
       this.singleTouchStart = null
     }
