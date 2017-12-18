@@ -463,7 +463,7 @@ export default class ReactCalendarTimeline extends Component {
 
         // Find out if tap was in scrollarea (below header) or not
         var wasScrollAreaClick = false;
-        var parentPosition = (0, _utils.getParentPosition)(e.currentTarget);
+        var parentPosition = getParentPosition(e.currentTarget);
         var screenY = this.lastSingleTouch.screenY;
         var headerHeight = this.props.headerLabelGroupHeight + this.props.headerLabelHeight;
         var stickyOffset = this.props.stickyOffset;
