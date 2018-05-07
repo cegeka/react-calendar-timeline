@@ -110,6 +110,7 @@ export default class ReactCalendarTimeline extends Component {
       minute: PropTypes.number,
       hour: PropTypes.number,
       day: PropTypes.number,
+      week: PropTypes.number,
       month: PropTypes.number,
       year: PropTypes.number
     }),
@@ -132,6 +133,7 @@ export default class ReactCalendarTimeline extends Component {
       monthMedium: PropTypes.string,
       monthMediumLong: PropTypes.string,
       monthLong: PropTypes.string,
+      week: PropTypes.string,
       dayShort: PropTypes.string,
       dayLong: PropTypes.string,
       hourShort: PropTypes.string,
@@ -146,6 +148,7 @@ export default class ReactCalendarTimeline extends Component {
       monthShort: PropTypes.string,
       monthMedium: PropTypes.string,
       monthLong: PropTypes.string,
+      week: PropTypes.string,
       dayShort: PropTypes.string,
       dayMedium: PropTypes.string,
       dayMediumLong: PropTypes.string,

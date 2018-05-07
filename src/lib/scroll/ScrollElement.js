@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import { getParentPosition } from '../utility/dom-helpers'
+import {getParentPosition} from '../utility/dom-helpers'
 
 class ScrollElement extends Component {
   static propTypes = {
@@ -35,7 +35,7 @@ class ScrollElement extends Component {
 
   // TODO: fix this where this is called when scrollLeft is set
   handleScroll = () => {
-    const { width } = this.props
+    const {width} = this.props
     const scrollComponent = this.scrollComponent
 
     const scrollX = scrollComponent.scrollLeft
@@ -52,7 +52,7 @@ class ScrollElement extends Component {
   }
 
   handleWheel = e => {
-    const { traditionalZoom } = this.props
+    const {traditionalZoom} = this.props
 
     e.preventDefault()
 
@@ -148,13 +148,13 @@ class ScrollElement extends Component {
       let y = e.touches[0].clientY
 
       this.lastTouchDistance = null
-      this.singleTouchStart = { x: x, y: y, screenY: window.pageYOffset }
-      this.lastSingleTouch = { x: x, y: y, screenY: window.pageYOffset }
+      this.singleTouchStart = {x: x, y: y, screenY: window.pageYOffset}
+      this.lastSingleTouch = {x: x, y: y, screenY: window.pageYOffset}
     }
   }
 
   handleTouchMove = e => {
-    const { isInteractingWithItem, width } = this.props
+    const {isInteractingWithItem, width} = this.props
     if (isInteractingWithItem) {
       e.preventDefault()
       return
@@ -186,7 +186,7 @@ class ScrollElement extends Component {
       let deltaX0 = x - this.singleTouchStart.x
       let deltaY0 = y - this.singleTouchStart.y
 
-      this.lastSingleTouch = { x: x, y: y }
+      this.lastSingleTouch = {x: x, y: y}
 
       let moveX = Math.abs(deltaX0) * 3 > Math.abs(deltaY0)
       let moveY = Math.abs(deltaY0) * 3 > Math.abs(deltaX0)
@@ -212,6 +212,35 @@ class ScrollElement extends Component {
     if (this.lastSingleTouch) {
       e.preventDefault()
 
+      // Ensure that no touchmove was effected
+      if ((this.lastSingleTouch.x == this.singleTouchStart.x)
+        && (this.lastSingleTouch.y == this.singleTouchStart.y)) {
+
+        // Add clientX and clientY position to event
+        // so that groupId and time can be calculated
+        e.clientX = this.lastSingleTouch.x
+        e.clientY = this.lastSingleTouch.y
+
+        // Find out if tap was in scrollarea (below header) or not
+        let wasScrollAreaClick = false
+        // let parentPosition = (0, _utils.getParentPosition)(e.currentTarget)
+        var parentPosition = getParentPosition(e.currentTarget);
+        let screenY = this.lastSingleTouch.screenY
+        let headerHeight = this.props.headerLabelGroupHeight + this.props.headerLabelHeight
+        let stickyOffset = this.props.stickyOffset
+        let realOffset = parentPosition.y - screenY
+        if (realOffset > 0) {
+          wasScrollAreaClick = e.clientY > realOffset + headerHeight
+        } else {
+          wasScrollAreaClick = e.clientY > stickyOffset + headerHeight
+        }
+
+        // Call appropriate actions
+        if (wasScrollAreaClick) {
+          this.scrollAreaClick(e)
+        }
+      }
+
       this.lastSingleTouch = null
       this.singleTouchStart = null
     }
@@ -226,7 +255,7 @@ class ScrollElement extends Component {
       onDoubleClick,
       onMouseEnter
     } = this.props
-    const { isDragging } = this.state
+    const {isDragging} = this.state
 
     const scrollComponentStyle = {
       width: `${width}px`,

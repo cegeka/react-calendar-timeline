@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import moment from 'moment'
 
-import { iterateTimes, getNextUnit } from '../utility/calendar'
+import {iterateTimes, getNextUnit} from '../utility/calendar'
 
 export default class Header extends Component {
   static propTypes = {
@@ -43,7 +43,7 @@ export default class Header extends Component {
   }
 
   headerLabel(time, unit, width) {
-    const { headerLabelFormats: f } = this.props
+    const {headerLabelFormats: f} = this.props
 
     if (unit === 'year') {
       return time.format(width < 46 ? f.yearShort : f.yearLong)
@@ -52,9 +52,11 @@ export default class Header extends Component {
         width < 65
           ? f.monthShort
           : width < 75
-            ? f.monthMedium
-            : width < 120 ? f.monthMediumLong : f.monthLong
+          ? f.monthMedium
+          : width < 120 ? f.monthMediumLong : f.monthLong
       )
+    } else if (unit === 'week') {
+      return 'Week ' + time.format(f.week)
     } else if (unit === 'day') {
       return time.format(width < 150 ? f.dayShort : f.dayLong)
     } else if (unit === 'hour') {
@@ -62,8 +64,8 @@ export default class Header extends Component {
         width < 50
           ? f.hourShort
           : width < 130
-            ? f.hourMedium
-            : width < 150 ? f.hourMediumLong : f.hourLong
+          ? f.hourMedium
+          : width < 150 ? f.hourMediumLong : f.hourLong
       )
     } else {
       return time.format(f.time)
@@ -71,7 +73,7 @@ export default class Header extends Component {
   }
 
   subHeaderLabel(time, unit, width) {
-    const { subHeaderLabelFormats: f } = this.props
+    const {subHeaderLabelFormats: f} = this.props
 
     if (unit === 'year') {
       return time.format(width < 46 ? f.yearShort : f.yearLong)
@@ -79,6 +81,8 @@ export default class Header extends Component {
       return time.format(
         width < 37 ? f.monthShort : width < 85 ? f.monthMedium : f.monthLong
       )
+    } else if (unit === 'week') {
+      return 'Week ' + time.format(f.week)
     } else if (unit === 'day') {
       return time.format(
         width < 47
@@ -154,7 +158,7 @@ export default class Header extends Component {
               key={`top-label-${time.valueOf()}`}
               className={`rct-label-group${
                 hasRightSidebar ? ' rct-has-right-sidebar' : ''
-              }`}
+                }`}
               onClick={() => this.handlePeriodClick(time, nextUnit)}
               style={{
                 left: `${left - 1}px`,
@@ -164,7 +168,7 @@ export default class Header extends Component {
                 cursor: 'pointer'
               }}
             >
-              <span style={{ width: contentWidth, display: 'block' }}>
+              <span style={{width: contentWidth, display: 'block'}}>
                 {this.headerLabel(time, nextUnit, labelWidth)}
               </span>
             </div>
@@ -193,7 +197,7 @@ export default class Header extends Component {
             key={`label-${time.valueOf()}`}
             className={`rct-label ${twoHeaders ? '' : 'rct-label-only'} ${
               firstOfType ? 'rct-first-of-type' : ''
-            } ${minUnit !== 'month' ? `rct-day-${time.day()}` : ''} `}
+              } ${minUnit !== 'month' ? `rct-day-${time.day()}` : ''} `}
             onClick={() => this.handlePeriodClick(time, minUnit)}
             style={{
               left: `${left - leftCorrect}px`,
@@ -202,15 +206,15 @@ export default class Header extends Component {
                 minUnit === 'year'
                   ? headerLabelGroupHeight + headerLabelHeight
                   : headerLabelHeight
-              }px`,
+                }px`,
               lineHeight: `${
                 minUnit === 'year'
                   ? headerLabelGroupHeight + headerLabelHeight
                   : headerLabelHeight
-              }px`,
+                }px`,
               fontSize: `${
                 labelWidth > 30 ? '14' : labelWidth > 20 ? '12' : '10'
-              }px`,
+                }px`,
               cursor: 'pointer'
             }}
           >
@@ -238,13 +242,13 @@ export default class Header extends Component {
       >
         <div
           className="top-header"
-          style={{ height: headerLabelGroupHeight, width: canvasWidth }}
+          style={{height: headerLabelGroupHeight, width: canvasWidth}}
         >
           {topHeaderLabels}
         </div>
         <div
           className="bottom-header"
-          style={{ height: headerLabelHeight, width: canvasWidth }}
+          style={{height: headerLabelHeight, width: canvasWidth}}
         >
           {bottomHeaderLabels}
         </div>

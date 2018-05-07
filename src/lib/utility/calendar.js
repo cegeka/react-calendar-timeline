@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { _get } from './generic'
+import {_get} from './generic'
 
 export function coordinateToTimeRatio(
   canvasTimeStart,
@@ -54,54 +54,21 @@ export function iterateTimes(start, end, unit, timeSteps, callback) {
 export const minCellWidth = 17
 
 export function getMinUnit(zoom, width, timeSteps) {
-  // for supporting weeks, its important to remember that each of these
-  // units has a national progression to the other. i.e. a year is 12 months
-  // a month is 24 days, a day is 24 hours.
-  // with weeks this isnt the case so weeks needs to be handled specially
-  let timeDividers = {
-    second: 1000,
-    minute: 60,
-    hour: 60,
-    day: 24,
-    month: 30,
-    year: 12
+  if (zoom / 1000 <= 60) {
+    return 'second'
+  } else if (zoom / 1000 / 60 <= 60) {
+    return 'minute'
+  } else if (zoom / 1000 / 60 / 60 <= 24) {
+    return 'hour'
+  } else if (zoom / 1000 / 60 / 60 / 24 <= 7) {
+    return 'day'
+  } else if (zoom / 1000 / 60 / 60 / 24 / 7 <= 5) {
+    return 'week'
+  } else if (zoom / 1000 / 60 / 60 / 24 / 31 <= 12) {
+    return 'month'
+  } else {
+    return 'year'
   }
-
-  let minUnit = 'year'
-
-  // this timespan is in ms initially
-  let nextTimeSpanInUnitContext = zoom
-
-  Object.keys(timeDividers).some(unit => {
-    // converts previous time span to current unit
-    // (e.g. milliseconds to seconds, seconds to minutes, etc)
-    nextTimeSpanInUnitContext = nextTimeSpanInUnitContext / timeDividers[unit]
-
-    // timeSteps is "
-    // With what step to display different units. E.g. 15 for minute means only minutes 0, 15, 30 and 45 will be shown."
-    // how many cells would be rendered given this time span, for this unit?
-    // e.g. for time span of 60 minutes, and time step of 1, we would render 60 cells
-    const cellsToBeRenderedForCurrentUnit =
-      nextTimeSpanInUnitContext / timeSteps[unit]
-
-    // what is happening here? why 3 if time steps are greater than 1??
-    const cellWidthToUse =
-      timeSteps[unit] && timeSteps[unit] > 1 ? 3 * minCellWidth : minCellWidth
-
-    // for the minWidth of a cell, how many cells would be rendered given
-    // the current pixel width
-    // i.e. f
-    const minimumCellsToRenderUnit = width / cellWidthToUse
-
-    if (cellsToBeRenderedForCurrentUnit < minimumCellsToRenderUnit) {
-      // for the current zoom, the number of cells we'd need to render all parts of this unit
-      // is less than the minimum number of cells needed at minimum cell width
-      minUnit = unit
-      return true
-    }
-  })
-
-  return minUnit
 }
 
 export function getNextUnit(unit) {
@@ -109,7 +76,8 @@ export function getNextUnit(unit) {
     second: 'minute',
     minute: 'hour',
     hour: 'day',
-    day: 'month',
+    day: 'week',
+    week: 'month',
     month: 'year'
   }
 
@@ -117,18 +85,18 @@ export function getNextUnit(unit) {
 }
 
 export function calculateDimensions({
-  itemTimeStart,
-  itemTimeEnd,
-  isDragging,
-  isResizing,
-  canvasTimeStart,
-  canvasTimeEnd,
-  canvasWidth,
-  dragSnap,
-  dragTime,
-  resizingEdge,
-  resizeTime
-}) {
+                                      itemTimeStart,
+                                      itemTimeEnd,
+                                      isDragging,
+                                      isResizing,
+                                      canvasTimeStart,
+                                      canvasTimeEnd,
+                                      canvasWidth,
+                                      dragSnap,
+                                      dragTime,
+                                      resizingEdge,
+                                      resizeTime
+                                    }) {
   const itemStart =
     isResizing && resizingEdge === 'left' ? resizeTime : itemTimeStart
   const itemEnd =
@@ -165,7 +133,7 @@ export function calculateDimensions({
 }
 
 export function getGroupOrders(groups, keys) {
-  const { groupIdKey } = keys
+  const {groupIdKey} = keys
 
   let groupOrders = {}
 
@@ -194,7 +162,7 @@ export function getGroupedItems(items, groupOrders) {
 }
 
 export function getVisibleItems(items, canvasTimeStart, canvasTimeEnd, keys) {
-  const { itemTimeStartKey, itemTimeEndKey } = keys
+  const {itemTimeStartKey, itemTimeEndKey} = keys
 
   return items.filter(item => {
     return (
@@ -234,7 +202,7 @@ export function stack(items, groupOrders, lineHeight, force) {
     }
   }
 
-  groupedItems.forEach(function(group) {
+  groupedItems.forEach(function (group) {
     // calculate new, non-overlapping positions
     groupTops.push(totalHeight)
 
@@ -303,7 +271,7 @@ export function nostack(items, groupOrders, lineHeight, force) {
     }
   }
 
-  groupedItems.forEach(function(group) {
+  groupedItems.forEach(function (group) {
     // calculate new, non-overlapping positions
     groupTops.push(totalHeight)
 
