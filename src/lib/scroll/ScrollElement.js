@@ -206,39 +206,21 @@ class ScrollElement extends Component {
   handleTouchEnd = e => {
     if (this.lastTouchDistance) {
       e.preventDefault()
-
       this.lastTouchDistance = null
     }
+
     if (this.lastSingleTouch) {
       e.preventDefault()
 
       // Ensure that no touchmove was effected
-      if ((this.lastSingleTouch.x == this.singleTouchStart.x)
-        && (this.lastSingleTouch.y == this.singleTouchStart.y)) {
-
+      if ((this.lastSingleTouch.x == this.singleTouchStart.x) && (this.lastSingleTouch.y == this.singleTouchStart.y)) {
+        let newEvent = {...e}
         // Add clientX and clientY position to event
         // so that groupId and time can be calculated
-        e.clientX = this.lastSingleTouch.x
-        e.clientY = this.lastSingleTouch.y
+        newEvent.clientX = this.lastSingleTouch.x
+        newEvent.clientY = this.lastSingleTouch.y
 
-        // Find out if tap was in scrollarea (below header) or not
-        let wasScrollAreaClick = false
-        // let parentPosition = (0, _utils.getParentPosition)(e.currentTarget)
-        var parentPosition = getParentPosition(e.currentTarget);
-        let screenY = this.lastSingleTouch.screenY
-        let headerHeight = this.props.headerLabelGroupHeight + this.props.headerLabelHeight
-        let stickyOffset = this.props.stickyOffset
-        let realOffset = parentPosition.y - screenY
-        if (realOffset > 0) {
-          wasScrollAreaClick = e.clientY > realOffset + headerHeight
-        } else {
-          wasScrollAreaClick = e.clientY > stickyOffset + headerHeight
-        }
-
-        // Call appropriate actions
-        if (wasScrollAreaClick) {
-          this.scrollAreaClick(e)
-        }
+        this.props.onClick(newEvent)
       }
 
       this.lastSingleTouch = null
